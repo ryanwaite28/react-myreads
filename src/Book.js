@@ -22,6 +22,9 @@ class Book extends Component {
       if(this.props.resetMain) {
         this.props.resetMain();
       }
+      if(this.props.refreshResults) {
+        this.props.refreshResults(book, shelf);
+      }
     });
   }
 

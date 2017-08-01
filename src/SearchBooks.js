@@ -5,6 +5,7 @@ import Book from './Book'
 import shelfs from './shelfs'
 import * as BooksAPI from './BooksAPI'
 import PopMSG from './PopMSG'
+import { Debounce, Throttle } from 'react-throttle'
 
 class SearchBooks extends Component {
   state = {
@@ -31,7 +32,7 @@ class SearchBooks extends Component {
   }
 
   updateQuery = (query) => {
-    this.setState({query: query});
+    this.setState({query: query}, this.submitSearch);
   }
 
   clearQuery = (query) => {
@@ -52,11 +53,21 @@ class SearchBooks extends Component {
     BooksAPI.search(this.state.query.trim(), 6).then((books) => {
       if(books.error && books.error === "empty query") {
         // Bad query; No Results
-        this.setState({showLoading: "none", error: true, results: []}, () => {console.log(this.state)});
+        this.setState({showLoading: "none", error: true, results: []});
       }
       else {
-        this.setState({showLoading: "none", results: books, error: false}, () => {console.log(this.state)});
+        if(this.state.results !== books) {
+          this.setState({results: books});
+        }
+        this.setState({showLoading: "none", error: false});
       }
+    });
+  }
+
+  refreshResults(book, shelf){
+    this.setState(() => {
+      var index = this.state.results.indexOf(book);
+      this.state.results[index].shelf = shelf;
     });
   }
 
@@ -81,18 +92,19 @@ class SearchBooks extends Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input type="text" placeholder="Search by title or author" value={this.state.query}
-              onChange={(event) => this.updateQuery(event.target.value)}/>
+
+              <input type="text" placeholder="Search by title or author" value={this.state.query}
+                onChange={(event) => this.updateQuery(event.target.value)}/>
 
           </div>
         </div>
         <div className="search-books-results">
-          <button style={{display: this.state.showLoading == "none" ? "block" : "none"}} className="btn btn-success middlr" onClick={() => {this.submitSearch()}}>Search</button>
+
           <img alt="loading gif" className="middlr" style={{width: "175px", display: this.state.showLoading}} src="https://ryanwaite28.github.io/book-search/Loading_icon.gif"/>
           <hr/>
           <ol className="books-grid">
             {this.state.results.length > 0 && this.state.results.map((book, index) => (
-              <Book showPopMSG={this.showPopMSG.bind(this)} book={book} shelf={book.shelf} key={book.id} id={book.id} imgurl={book.imageLinks === undefined ? "" : book.imageLinks.thumbnail} title={book.title} author={book.authors} />
+              <Book refreshResults={this.refreshResults.bind(this)} showPopMSG={this.showPopMSG.bind(this)} book={book} shelf={book.shelf} key={book.id} id={book.id} imgurl={book.imageLinks === undefined ? "" : book.imageLinks.thumbnail} title={book.title} author={book.authors} />
             ))}
           </ol>
           {this.state.error && <p>No Results...</p>}
