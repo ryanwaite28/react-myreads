@@ -1,6 +1,8 @@
 # Udacity
 ### React Nanodegree Program
 ##### Project One - My Reads
+
+Deployed on heroku: https://rmw-udacity-react-myreads.herokuapp.com
 -----
 
 ![](react_logo.png)
