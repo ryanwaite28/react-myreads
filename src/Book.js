@@ -17,8 +17,8 @@ class Book extends Component {
   addToShelf(book, shelf){
     BooksAPI.update(book, shelf).then((books) => {
       console.log(books);
-      this.setState({shelf: shelfs.currentlyReading});
-      this.props.showPopMSG(shelfs.currently_reading);
+      this.setState({shelf: shelf});
+      this.props.showPopMSG(shelf);
       if(this.props.resetMain) {
         this.props.resetMain();
       }
