@@ -1,32 +1,23 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Link, Route } from 'react-router-dom'
-import MainPage from './MainPage'
-import SearchBooks from './SearchBooks'
-import shelfs from './shelfs'
-import PopMSG from './PopMSG'
+import React from 'react'
+import './App.css'
 
-class App extends Component {
-  state = {
-    
-  }
+import { Route } from 'react-router-dom'
 
-  //
 
+import MainPage from './components/pages/MainPage';
+import SearchPage from './components/pages/SearchPage';
+import BookPage from './components/pages/BookPage';
+
+class BooksApp extends React.Component {
   render() {
     return (
-      <div className="app">
-        <Route exact path="/" render={({ history }) => (
-          <MainPage showPopMSG={this.showPopMSG}/>
-        )}/>
-
-        <Route exact path="/search" render={({ history }) => (
-          <SearchBooks showPopMSG={this.showPopMSG}/>
-        )}/>
+      <div>
+        <Route exact path="/" component={ MainPage } />
+        <Route exact path="/search" component={ SearchPage } />
+        <Route path="/book/:id" component={ BookPage } />
       </div>
-    )
+    );
   }
 }
 
-export default App;
+export default BooksApp

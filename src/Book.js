@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Link, Route } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import shelfs from './shelfs'
 import * as BooksAPI from './BooksAPI'
 
@@ -28,6 +28,22 @@ class Book extends Component {
     });
   }
 
+  switchShelfName() {
+    switch(this.props.book.shelf) {
+      case "currentlyReading":
+        return "Currently Reading";
+
+      case "wantToRead":
+        return "Want To Read";
+
+      case "read":
+        return "Read";
+
+      case "none":
+        return "None";
+    }
+  }
+
   componentDidMount() {
     // console.log(this);
 
@@ -48,8 +64,9 @@ class Book extends Component {
             </select>
           </div>
         </div>
-        <div className="book-title">{this.props.title}</div>
+        <div className="book-title"><Link to={"/book/" + this.props.book.id}>{this.props.title}</Link></div>
         <div className="book-authors">{this.props.author}</div>
+        <div className="book-authors">{this.switchShelfName()}</div>
       </div>
     )
   }

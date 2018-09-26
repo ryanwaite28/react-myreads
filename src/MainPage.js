@@ -7,13 +7,18 @@ import Book from './Book'
 import PopMSG from './PopMSG'
 
 class MainPage extends Component {
-  state = {
-    currently_reading: [],
-    want_to_read: [],
-    already_read: [],
-    popmsg: '',
-    popmsgdisplay: 'none',
-    showLoading: 'none'
+  constructor(props) {
+    super(props);
+    this.state = {
+      currently_reading: [],
+      want_to_read: [],
+      already_read: [],
+      popmsg: '',
+      popmsgdisplay: 'none',
+      showLoading: 'none'
+    }
+    this.showPopMSG = this.showPopMSG.bind(this);
+    this.resetMain = this.resetMain.bind(this);
   }
 
   showPopMSG(text){
@@ -72,7 +77,7 @@ class MainPage extends Component {
               <div className="bookshelf-books">
                 <ol className="books-grid">
                 {this.state.currently_reading.length > 0 && this.state.currently_reading.map((book, index) => (
-                  <Book showPopMSG={this.showPopMSG.bind(this)} book={book} key={book.id} id={book.id} imgurl={book.imageLinks.thumbnail} title={book.title} author={book.authors} resetMain={this.resetMain.bind(this)}/>
+                  <Book showPopMSG={this.showPopMSG} book={book} key={book.id} id={book.id} imgurl={book.imageLinks.thumbnail} title={book.title} author={book.authors} resetMain={this.resetMain}/>
                 ))}
                 </ol>
               </div>
@@ -83,7 +88,7 @@ class MainPage extends Component {
               <div className="bookshelf-books">
                 <ol className="books-grid">
                 {this.state.want_to_read.length > 0 && this.state.want_to_read.map((book, index) => (
-                  <Book showPopMSG={this.showPopMSG.bind(this)} book={book} key={book.id} id={book.id} imgurl={book.imageLinks.thumbnail} title={book.title} author={book.authors} resetMain={this.resetMain.bind(this)}/>
+                  <Book showPopMSG={this.showPopMSG} book={book} key={book.id} id={book.id} imgurl={book.imageLinks.thumbnail} title={book.title} author={book.authors} resetMain={this.resetMain}/>
                 ))}
                 </ol>
               </div>
@@ -94,7 +99,7 @@ class MainPage extends Component {
               <div className="bookshelf-books">
                 <ol className="books-grid">
                 {this.state.already_read.length > 0 && this.state.already_read.map((book, index) => (
-                  <Book showPopMSG={this.showPopMSG.bind(this)} book={book} shelf={book.shelf} key={book.id} id={book.id} imgurl={book.imageLinks.thumbnail} title={book.title} author={book.authors} resetMain={this.resetMain.bind(this)}/>
+                  <Book showPopMSG={this.showPopMSG} book={book} shelf={book.shelf} key={book.id} id={book.id} imgurl={book.imageLinks.thumbnail} title={book.title} author={book.authors} resetMain={this.resetMain}/>
                 ))}
                 </ol>
               </div>
